@@ -3,7 +3,7 @@
 $host = 'localhost';
 $user = 'root';
 $password = '';
-$db = 'ussd';
+$db = 'upfilt-me';
 
 $con = mysqli_connect($host,$user,$password,$db);
 

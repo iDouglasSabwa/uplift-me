@@ -14,23 +14,34 @@ include 'connect.php';
 
 if ($text == "") {
 	# This is the first request. Start the response with CON...
-	$response = "CON What would you want to do\n";
-	$response .= "1. Check Status\n";
-	$response .= "2. Make payments";
+	$response = "CON How are you feeling?\n";
+	$response .= "1. Positive\n";
+	$response .= "2. Negative";
 
 } elseif($text == "1") {
 	# Business logic for response level 1...
-	$no = 'KDH123';
-	$sql = "SELECT name,status,vehicle FROM ussd WHERE vehicle = '$no'";
+	$sql = "SELECT id,mood_type FROM moods WHERE mood = 'Positive'";
 	$sql = mysqli_query($con,$sql);
 
 	foreach ($sql as $key => $value) {
 		# code...
-		$name = $value['name'];
-		$vehicle = $value['vehicle'];
-		$status = $value['status'];
+		$id = $value['id'];
+		$mood_type = $value['mood_type'];
 		#End execution
-		$response = "END INSURANCE DETAILS\nCustomer Name: ".$name."\nVehicle status: ".$vehicle."\nStatus: ".$status."";
+		$response = "Positive";
+	}
+
+} elseif($text == "2") {
+	# Business logic for response level 2...
+	$sql = "SELECT id,mood_type FROM moods WHERE mood = 'Negative'";
+	$sql = mysqli_query($con,$sql);
+
+	foreach ($sql as $key => $value) {
+		# code...
+		$id = $value['id'];
+		$mood_type = $value['mood_type'];
+		#End execution
+		$response = "Negative";
 	}
 
 } else {

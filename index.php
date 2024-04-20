@@ -33,7 +33,7 @@ if ($text == "") {
 		$response .= "1. $mood_type\n";	
 
 		//Insert into logs table
-		$inslog = "INSERT INTO applogs(phone,session,mood,mood_type,verse,date_created) VALUES ($phoneNumber,sessionId,'Positive',$mood_type,'','')";		
+		$inslog = "INSERT INTO applogs(phone,session,mood,mood_type,verse,date_created) VALUES ($phoneNumber,sessionId,'Positive',$mood_type,'','$idate')";		
 	}
 
 } elseif($text == "2") {

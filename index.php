@@ -22,16 +22,19 @@ if ($text == "") {
 
 } elseif($text == "1") {
 	# Business logic for response level 1...
-	$sql = "SELECT id,mood_type FROM moods WHERE mood = 'Positive' ORDER BY mood_type";
+	$sql = "SELECT id,mood_type FROM moods WHERE mood = 'Positive' ORDER BY mood_type ASC";
 	$sql = mysqli_query($con,$sql);
+
+	//Start screen
+	$response = "CON How exactly?\n";
 
 	foreach ($sql as $key => $value) {
 		# code...
 		$id = $value['id'];
 		$mood_type = $value['mood_type'];
-		#End execution
-		$response = "CON How exactly?\n";
-		// $response .= "1. $mood_type\n";	
+
+		//Screen options
+		$response .= "1. '.$mood_type.'\n";		
 	}
 
 	//Log results
@@ -41,17 +44,19 @@ if ($text == "") {
 
 } elseif($text == "2") {
 	# Business logic for response level 2...
-	$sql = "SELECT id,mood_type FROM moods WHERE mood = 'Negative' ORDER BY mood_type";
+	$sql = "SELECT id,mood_type FROM moods WHERE mood = 'Negative' ORDER BY mood_type ASC";
 	$sql = mysqli_query($con,$sql);
+
+	//Start screen
+	$response = "CON How exactly?\n";
 
 	foreach ($sql as $key => $value) {
 		# code...
 		$id = $value['id'];
 		$mood_type = $value['mood_type'];
-		#End execution
-		$response = "CON How exactly?\n";
-		// $response .= "1. $mood_type\n";	
-		
+
+		//Screen options
+		$response .= "1. '.$mood_type.'\n";		
 	}
 
 	//Log results

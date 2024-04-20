@@ -34,7 +34,7 @@ if ($text == "") {
 		$mood_type = $value['mood_type'];
 
 		//Screen options
-		$response .= "1. '.$mood_type.'\n";		
+		$response .= "$id. '.$mood_type.'\n";		
 	}
 
 	//Log results
@@ -49,6 +49,7 @@ if ($text == "") {
 
 	//Start screen
 	$response = "CON How exactly?\n";
+	$number = 1;
 
 	foreach ($sql as $key => $value) {
 		# code...
@@ -56,7 +57,7 @@ if ($text == "") {
 		$mood_type = $value['mood_type'];
 
 		//Screen options
-		$response .= "1. '.$mood_type.'\n";		
+		$response .= $number++ . ". $mood_type\n";		
 	}
 
 	//Log results

@@ -1,5 +1,5 @@
 # uplift-me
-USSD based app to encourage you when you are feeling low.
+USSD based app to get you Bible verses based on your current mode.
 
 How it works
 

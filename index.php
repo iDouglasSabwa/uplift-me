@@ -20,7 +20,7 @@ if ($text == "") {
 
 } elseif($text == "1") {
 	# Business logic for response level 1...
-	$sql = "SELECT id,mood_type FROM moods WHERE mood = 'Positive'";
+	$sql = "SELECT id,mood_type FROM moods WHERE mood = 'Positive' ORDER BY mood_type";
 	$sql = mysqli_query($con,$sql);
 
 	foreach ($sql as $key => $value) {
@@ -28,12 +28,12 @@ if ($text == "") {
 		$id = $value['id'];
 		$mood_type = $value['mood_type'];
 		#End execution
-		$response = "Positive";
+		$response .= "1. $mood_type\n";				
 	}
 
 } elseif($text == "2") {
-	# Business logic for response level 2...
-	$sql = "SELECT id,mood_type FROM moods WHERE mood = 'Negative'";
+	# Business logic for response level 2...e
+	$sql = "SELECT id,mood_type FROM moods WHERE mood = 'Negative' ORDER BY mood_type";
 	$sql = mysqli_query($con,$sql);
 
 	foreach ($sql as $key => $value) {
@@ -41,7 +41,7 @@ if ($text == "") {
 		$id = $value['id'];
 		$mood_type = $value['mood_type'];
 		#End execution
-		$response = "Negative";
+		$response .= "1. $mood_type\n";	
 	}
 
 } else {

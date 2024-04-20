@@ -8,6 +8,8 @@ $networkCode = $_POST['networkCode'];
 $serviceCode = $_POST['serviceCode'];
 $phoneNumber = ltrim($_POST['phoneNumber']);
 $text = $_POST['text'];
+date_default_timezone_set("Africa/Nairobi");    
+$idate =  date('Y-m-d H:i:s');
 
 //Database connection file
 include 'connect.php';
@@ -28,7 +30,10 @@ if ($text == "") {
 		$id = $value['id'];
 		$mood_type = $value['mood_type'];
 		#End execution
-		$response .= "1. $mood_type\n";				
+		$response .= "1. $mood_type\n";	
+
+		//Insert into logs table
+		$inslog = "INSERT INTO applogs(phone,session,mood,mood_type,verse,date_created) VALUES ($phoneNumber,sessionId,'Positive',$mood_type,'','')";		
 	}
 
 } elseif($text == "2") {

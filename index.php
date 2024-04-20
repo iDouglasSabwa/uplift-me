@@ -31,14 +31,16 @@ if ($text == "") {
 		$mood_type = $value['mood_type'];
 		#End execution
 		$response = "CON How exactly?\n";
-		$response .= "1. $mood_type\n";	
+		// $response .= "1. $mood_type\n";	
 	}
 
 	//Log results
-		$inslog = "INSERT INTO applogs(phone,session,mood,mood_type,verse,date_created) VALUES ($phoneNumber,sessionId,'Positive',$mood_type,'','$idate')";
+		$inslog = "INSERT INTO applogs(phone,session,mood,mood_type,verse,date_created) VALUES ('$phoneNumber','$sessionId','Positive','$mood_type','','$idate')";
+		$inslog = mysqli_query($con,$inslog);
+
 
 } elseif($text == "2") {
-	# Business logic for response level 2...e
+	# Business logic for response level 2...
 	$sql = "SELECT id,mood_type FROM moods WHERE mood = 'Negative' ORDER BY mood_type";
 	$sql = mysqli_query($con,$sql);
 
@@ -48,12 +50,14 @@ if ($text == "") {
 		$mood_type = $value['mood_type'];
 		#End execution
 		$response = "CON How exactly?\n";
-		$response .= "1. $mood_type\n";	
+		// $response .= "1. $mood_type\n";	
 		
 	}
 
 	//Log results
-		$inslog = "INSERT INTO applogs(phone,session,mood,mood_type,verse,date_created) VALUES ($phoneNumber,sessionId,'Negative',$mood_type,'','$idate')";		
+		$inslog = "INSERT INTO applogs(phone,session,mood,mood_type,verse,date_created) VALUES ('$phoneNumber','$sessionId','Negative','$mood_type','','$idate')";
+		$inslog = mysqli_query($con,$inslog);
+	
 
 } else {
 	$response = "END Invalid Request";

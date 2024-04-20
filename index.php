@@ -30,11 +30,12 @@ if ($text == "") {
 		$id = $value['id'];
 		$mood_type = $value['mood_type'];
 		#End execution
+		$response = "CON How exactly?\n";
 		$response .= "1. $mood_type\n";	
-
-		//Log results
-		$inslog = "INSERT INTO applogs(phone,session,mood,mood_type,verse,date_created) VALUES ($phoneNumber,sessionId,'Positive',$mood_type,'','$idate')";		
 	}
+
+	//Log results
+		$inslog = "INSERT INTO applogs(phone,session,mood,mood_type,verse,date_created) VALUES ($phoneNumber,sessionId,'Positive',$mood_type,'','$idate')";
 
 } elseif($text == "2") {
 	# Business logic for response level 2...e
@@ -46,11 +47,13 @@ if ($text == "") {
 		$id = $value['id'];
 		$mood_type = $value['mood_type'];
 		#End execution
+		$response = "CON How exactly?\n";
 		$response .= "1. $mood_type\n";	
-
-		//Log results
-		$inslog = "INSERT INTO applogs(phone,session,mood,mood_type,verse,date_created) VALUES ($phoneNumber,sessionId,'Negative',$mood_type,'','$idate')";		
+		
 	}
+
+	//Log results
+		$inslog = "INSERT INTO applogs(phone,session,mood,mood_type,verse,date_created) VALUES ($phoneNumber,sessionId,'Negative',$mood_type,'','$idate')";		
 
 } else {
 	$response = "END Invalid Request";

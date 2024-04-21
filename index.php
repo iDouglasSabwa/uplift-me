@@ -38,7 +38,7 @@ if ($text == "") {
 
 } elseif($text == "1") {
 	# Business logic for response level 1...
-	$maxsql = "SELECT id AS maxid FROM verses WHERE mood_type = 8 ORDER BY id DESC";
+	$maxsql = "SELECT id AS maxid FROM verses WHERE topic = 1 ORDER BY id DESC";
 	$maxsql = mysqli_query($con,$maxsql);
 
 	//Randomise verse
@@ -46,7 +46,7 @@ if ($text == "") {
 	$max = $max['maxid'];
 	$verse_id = mt_rand(1,$max);
 
-	$sql = "SELECT verses.id,verse,verse_text,moods.mood_type AS mood_type FROM verses INNER JOIN moods ON moods.id = verses.mood_type WHERE verses.id = '$verse_id';";
+	$sql = "SELECT verses.id,verse,verse_text,topics.topic AS topic FROM verses INNER JOIN topics ON topics.id = verses.topic WHERE verses.id = '$verse_id';";
 	$sql = mysqli_query($con,$sql);
 
 	foreach ($sql as $key => $value) {
@@ -54,7 +54,7 @@ if ($text == "") {
 		$id = $value['id'];
 		$verse = $value['verse'];
 		$verse_text = $value['verse_text'];
-		$mood_type = $value['mood_type'];
+		$topic = $value['topic'];
 
 		//Send text to the user
 		$curl = curl_init();
@@ -69,7 +69,7 @@ if ($text == "") {
         CURLOPT_CUSTOMREQUEST => 'POST',
         CURLOPT_POSTFIELDS =>'{
             "senderID": "MOBILESASA",
-            "message": "Mood: '.$mood_type.'\n\n'.$verse.'\n'.$verse_text.'\n",
+            "message": "Context: '.$topic.'\n\n'.$verse.'\n'.$verse_text.'\n",
             "phone": "'.$phoneNumber.'"
         }',
         CURLOPT_HTTPHEADER => array(

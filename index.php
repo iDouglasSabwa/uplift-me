@@ -67,12 +67,12 @@ if ($text == "") {
 
 } elseif($text == "1*1") {
 	# Business logic for response level 1*1...
-	$maxsql = "SELECT id FROM verses WHERE mood_type = '8' ORDER BY id DESC";
+	$maxsql = "SELECT id AS maxid FROM verses WHERE mood_type = '8' ORDER BY id DESC";
 	$maxsql = mysqli_query($con,$maxsql);
 
 	//Randomise verse
 	$max = mysqli_fetch_array($maxsql);
-	$max = $max['id'];
+	$max = $max['maxid'];
 	$verse_id = mt_rand(1,$max);
 
 	$sql = "SELECT verses.id,verse,verse_text,moods.mood_type AS mood_type FROM verses INNER JOIN moods ON moods.id = verses.mood_type WHERE verses.id = '$verse_id';";
@@ -101,7 +101,7 @@ if ($text == "") {
         CURLOPT_CUSTOMREQUEST => 'POST',
         CURLOPT_POSTFIELDS =>'{
             "senderID": "MOBILESASA",
-            "message": "Current mood: '.$mood_type.'\n'.$verse.'\n'.$verse_text.'",
+            "message": "Mood: '.$mood_type.'\n'.$verse.'\n'.$verse_text.'",
             "phone": "'.$phoneNumber.'"
         }',
         CURLOPT_HTTPHEADER => array(

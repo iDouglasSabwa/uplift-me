@@ -75,7 +75,7 @@ if ($text == "") {
 	$max = $max['id'];
 	$verse_id = mt_rand(1,$max);
 
-	$sql = "SELECT id,verse,verse_text,mood_type FROM verses WHERE id = '$verse_id';";
+	$sql = "SELECT id,verse,verse_text,moods.mood_type AS mood_type FROM verses INNER JOIN moods ON moods.id = verses.mood_type WHERE id = '$verse_id';";
 	$sql = mysqli_query($con,$sql);
 
 	foreach ($sql as $key => $value) {
@@ -86,7 +86,34 @@ if ($text == "") {
 		$mood_type = $value['mood_type'];
 
 		//User display
-		$response = "END Verse: $verse\nVerse: $verse_text";
+		$response = "END Verse: $verse\n$verse_text";
+
+		//Send text to the user
+		$curl = curl_init();
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://api.mobilesasa.com/v1/send/message',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS =>'{
+            "senderID": "MOBILESASA",
+            "message": "Current mood: '.$mood_type.'\n",
+            "phone": "254'.$sphone.'"
+        }',
+        CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json',
+            'Accept: application/json',
+            'Authorization: Bearer 5qNuXQ0HfU8N9fBfvApLqoWBEOQ3pdkLZEhtPLvSa9D4GYyQfuWf5BQv4a9e'
+          ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        // echo $response;     
 	}
 
 		//Log results

@@ -73,7 +73,7 @@ if ($text == "") {
 	//Randomise verse
 	$max = mysqli_fetch_array($maxsql);
 	$max = $max['id'];
-	$verse_id = mt_rand(1,$max);
+	$verse_id = mt_rand(0,$max);
 
 	$sql = "SELECT verses.id,verse,verse_text,moods.mood_type AS mood_type FROM verses INNER JOIN moods ON moods.id = verses.mood_type WHERE verses.id = '$verse_id';";
 	$sql = mysqli_query($con,$sql);
@@ -107,7 +107,7 @@ if ($text == "") {
         CURLOPT_HTTPHEADER => array(
             'Content-Type: application/json',
             'Accept: application/json',
-            'Authorization: Bearer 5qNuXQ0HfU8N9fBfvApLqoWBEOQ3pdkLZEhtPLvSa9D4GYyQfuWf5BQv4a9e'
+            'Authorization: Bearer '
           ),
         ));
 

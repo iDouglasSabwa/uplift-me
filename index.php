@@ -7,6 +7,7 @@ $sessionId = $_POST['sessionId'];
 $networkCode = $_POST['networkCode'];
 $serviceCode = $_POST['serviceCode'];
 $phoneNumber = ltrim($_POST['phoneNumber']);
+// $phoneNumber = ['phoneNumber'];
 $text = $_POST['text'];
 date_default_timezone_set("Africa/Nairobi");    
 $idate =  date('Y-m-d H:i:s');
@@ -15,59 +16,29 @@ $idate =  date('Y-m-d H:i:s');
 include 'connect.php';
 
 if ($text == "") {
-	# This is the first request. Start the response with CON...
-	$response = "CON How are you feeling?\n";
-	$response .= "1. Positive\n";
-	$response .= "2. Negative";
+	# Business logic for response level 1...
+	$sql = "SELECT id,topic FROM topics ORDER BY topic ASC";
+	$sql = mysqli_query($con,$sql);
+
+	//Start screen
+	$response = "CON Choose a topic\n";
+	$number = 1;
+
+	foreach ($sql as $key => $value) {
+		# code...
+		$id = $value['id'];
+		$topic = $value['topic'];
+
+		//Screen options
+		$response .= $number++ . ". $topic\n";	}
+
+	//Log results
+		$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId','$id','','$idate')";
+		$inslog = mysqli_query($con,$inslog);
 
 } elseif($text == "1") {
 	# Business logic for response level 1...
-	$sql = "SELECT id,mood_type FROM moods WHERE mood = 'Positive' ORDER BY mood_type ASC";
-	$sql = mysqli_query($con,$sql);
-
-	//Start screen
-	$response = "CON How exactly?\n";
-	$number = 1;
-
-	foreach ($sql as $key => $value) {
-		# code...
-		$id = $value['id'];
-		$mood_type = $value['mood_type'];
-
-		//Screen options
-		$response .= $number++ . ". $mood_type\n";	}
-
-	//Log results
-		$inslog = "INSERT INTO applogs(phone,session,mood,mood_type,verse,date_created) VALUES ('$phoneNumber','$sessionId','Positive','$mood_type','','$idate')";
-		$inslog = mysqli_query($con,$inslog);
-
-
-} elseif($text == "2") {
-	# Business logic for response level 2...
-	$sql = "SELECT id,mood_type FROM moods WHERE mood = 'Negative' ORDER BY mood_type ASC";
-	$sql = mysqli_query($con,$sql);
-
-	//Start screen
-	$response = "CON How exactly?\n";
-	$number = 1;
-
-	foreach ($sql as $key => $value) {
-		# code...
-		$id = $value['id'];
-		$mood_type = $value['mood_type'];
-
-		//Screen options
-		$response .= $number++ . ". $mood_type\n";		
-	}
-
-		//Log results
-		$inslog = "INSERT INTO applogs(phone,session,mood,mood_type,verse,date_created) VALUES ('$phoneNumber','$sessionId','Negative','$mood_type','','$idate')";
-		$inslog = mysqli_query($con,$inslog);
-	
-
-} elseif($text == "1*1") {
-	# Business logic for response level 1*1...
-	$maxsql = "SELECT id AS maxid FROM verses WHERE mood_type = '8' ORDER BY id DESC";
+	$maxsql = "SELECT id AS maxid FROM verses WHERE mood_type = 8 ORDER BY id DESC";
 	$maxsql = mysqli_query($con,$maxsql);
 
 	//Randomise verse
@@ -85,9 +56,6 @@ if ($text == "") {
 		$verse_text = $value['verse_text'];
 		$mood_type = $value['mood_type'];
 
-		//User display
-		$response = "END Verse: $verse\n$verse_text\n$verse_id";
-
 		//Send text to the user
 		$curl = curl_init();
         curl_setopt_array($curl, array(
@@ -101,7 +69,7 @@ if ($text == "") {
         CURLOPT_CUSTOMREQUEST => 'POST',
         CURLOPT_POSTFIELDS =>'{
             "senderID": "MOBILESASA",
-            "message": "Mood: '.$mood_type.'\n\n'.$verse.'\n'.$verse_text.'",
+            "message": "Mood: '.$mood_type.'\n\n'.$verse.'\n'.$verse_text.'\n",
             "phone": "'.$phoneNumber.'"
         }',
         CURLOPT_HTTPHEADER => array(
@@ -111,18 +79,20 @@ if ($text == "") {
           ),
         ));
 
-        curl_exec($curl);
+        $smsresponse = curl_exec($curl);
         curl_close($curl);
-        // echo $response;     
+        // echo $response;   
+
+        //User display
+		$response = "END Verse: $verse\n$verse_text\n$verse_id\n";
+  
 	}
 
 		//Log results
 		$inslog = "INSERT INTO applogs(phone,session,mood,mood_type,verse,date_created) VALUES ('$phoneNumber','$sessionId','Positive','8','$verse_id','$idate')";
 		$inslog = mysqli_query($con,$inslog);
 
-
-} else {
-	$response = "END Invalid Request";
+	} else { $response = "END Invalid Request";
 }
 
 echo $response;

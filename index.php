@@ -67,13 +67,13 @@ if ($text == "") {
 
 } elseif($text == "1*1") {
 	# Business logic for response level 1*1...
-	$maxsql = "SELECT id FROM verses WHERE mood_type = '8';";
+	$maxsql = "SELECT id FROM verses WHERE mood_type = '8' ORDER BY id DESC";
 	$maxsql = mysqli_query($con,$maxsql);
 
 	//Randomise verse
 	$max = mysqli_fetch_array($maxsql);
 	$max = $max['id'];
-	$verse_id = mt_rand(0,$max);
+	$verse_id = mt_rand(1,$max);
 
 	$sql = "SELECT verses.id,verse,verse_text,moods.mood_type AS mood_type FROM verses INNER JOIN moods ON moods.id = verses.mood_type WHERE verses.id = '$verse_id';";
 	$sql = mysqli_query($con,$sql);
@@ -86,7 +86,7 @@ if ($text == "") {
 		$mood_type = $value['mood_type'];
 
 		//User display
-		$response = "END Verse: $verse\n$verse_text";
+		$response = "END Verse: $verse\n$verse_text\n$max";
 
 		//Send text to the user
 		$curl = curl_init();
@@ -111,7 +111,7 @@ if ($text == "") {
           ),
         ));
 
-        $smsresponse = curl_exec($curl);
+        curl_exec($curl);
         curl_close($curl);
         // echo $response;     
 	}

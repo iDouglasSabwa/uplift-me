@@ -89,7 +89,7 @@ if ($text == "") {
 	}
 
 		//Log results
-		$inslog = "INSERT INTO applogs(phone,session,mood,mood_type,verse,date_created) VALUES ('$phoneNumber','$sessionId','Positive','8','$verse_id','$idate')";
+		$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId','1','$verse_id','$idate')";
 		$inslog = mysqli_query($con,$inslog);
 
 	} else { $response = "END Invalid Request";

@@ -86,7 +86,7 @@ if ($text == "") {
 		$mood_type = $value['mood_type'];
 
 		//User display
-		$response = "END Verse: $verse\n$verse_text\n$max";
+		$response = "END Verse: $verse\n$verse_text\n$verse_id";
 
 		//Send text to the user
 		$curl = curl_init();
@@ -101,7 +101,7 @@ if ($text == "") {
         CURLOPT_CUSTOMREQUEST => 'POST',
         CURLOPT_POSTFIELDS =>'{
             "senderID": "MOBILESASA",
-            "message": "Mood: '.$mood_type.'\n'.$verse.'\n'.$verse_text.'",
+            "message": "Mood: '.$mood_type.'\n\n'.$verse.'\n'.$verse_text.'",
             "phone": "'.$phoneNumber.'"
         }',
         CURLOPT_HTTPHEADER => array(

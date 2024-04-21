@@ -75,7 +75,7 @@ if ($text == "") {
 	$max = $max['id'];
 	$verse_id = mt_rand(1,$max);
 
-	$sql = "SELECT id,verse,verse_text,moods.mood_type AS mood_type FROM verses INNER JOIN moods ON moods.id = verses.mood_type WHERE id = '$verse_id';";
+	$sql = "SELECT verses.id,verse,verse_text,moods.mood_type AS mood_type FROM verses INNER JOIN moods ON moods.id = verses.mood_type WHERE verses.id = '$verse_id';";
 	$sql = mysqli_query($con,$sql);
 
 	foreach ($sql as $key => $value) {
@@ -101,8 +101,8 @@ if ($text == "") {
         CURLOPT_CUSTOMREQUEST => 'POST',
         CURLOPT_POSTFIELDS =>'{
             "senderID": "MOBILESASA",
-            "message": "Current mood: '.$mood_type.'\n",
-            "phone": "254'.$sphone.'"
+            "message": "Current mood: '.$mood_type.'\n'.$verse.'\n'.$verse_text.'",
+            "phone": "'.$phoneNumber.'"
         }',
         CURLOPT_HTTPHEADER => array(
             'Content-Type: application/json',

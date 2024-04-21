@@ -111,7 +111,7 @@ if ($text == "") {
           ),
         ));
 
-        $response = curl_exec($curl);
+        $smsresponse = curl_exec($curl);
         curl_close($curl);
         // echo $response;     
 	}

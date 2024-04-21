@@ -60,10 +60,39 @@ if ($text == "") {
 		$response .= $number++ . ". $mood_type\n";		
 	}
 
-	//Log results
+		//Log results
 		$inslog = "INSERT INTO applogs(phone,session,mood,mood_type,verse,date_created) VALUES ('$phoneNumber','$sessionId','Negative','$mood_type','','$idate')";
 		$inslog = mysqli_query($con,$inslog);
 	
+
+} elseif($text == "1*1") {
+	# Business logic for response level 1*1...
+	$maxsql = "SELECT id FROM verses WHERE mood_type = '8';";
+	$maxsql = mysqli_query($con,$maxsql);
+
+	//Randomise verse
+	$max = mysqli_fetch_array($maxsql);
+	$max = $max['id'];
+	$verse_id = mt_rand(1,$max);
+
+	$sql = "SELECT id,verse,verse_text,mood_type FROM verses WHERE id = '$verse_id';";
+	$sql = mysqli_query($con,$sql);
+
+	foreach ($sql as $key => $value) {
+		# code...
+		$id = $value['id'];
+		$verse = $value['verse'];
+		$verse_text = $value['verse_text'];
+		$mood_type = $value['mood_type'];
+
+		//User display
+		$response = "END Verse: $verse\nVerse: $verse_text";
+	}
+
+		//Log results
+		$inslog = "INSERT INTO applogs(phone,session,mood,mood_type,verse,date_created) VALUES ('$phoneNumber','$sessionId','Positive','8','$verse_id','$idate')";
+		$inslog = mysqli_query($con,$inslog);
+
 
 } else {
 	$response = "END Invalid Request";

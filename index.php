@@ -15,6 +15,13 @@ $idate =  date('Y-m-d H:i:s');
 //Database connection file
 include 'connect.php';
 
+if ($text!=="") {
+	// code...
+	session_start();
+	$_SESSION['stext'] = $text;
+	$stext = $_SESSION['stext']; 
+}
+
 if ($text == "") {
 	# Business logic for response level 1...
 	$sql = "SELECT id,topic FROM topics ORDER BY topic ASC";
@@ -36,9 +43,9 @@ if ($text == "") {
 		$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId','$id','','$idate')";
 		$inslog = mysqli_query($con,$inslog);
 
-} elseif($text == "1") {
+} elseif($text == $stext) {
 	# Business logic for response level 1...
-	$maxsql = "SELECT id AS maxid FROM verses WHERE topic = 1 ORDER BY id DESC";
+	$maxsql = "SELECT id AS maxid FROM verses WHERE topic = '$stext' ORDER BY id DESC";
 	$maxsql = mysqli_query($con,$maxsql);
 
 	//Randomise verse
@@ -89,10 +96,12 @@ if ($text == "") {
 	}
 
 		//Log results
-		$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId','1','$verse_id','$idate')";
+		$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId','$text','$verse_id','$idate')";
 		$inslog = mysqli_query($con,$inslog);
 
-	} else { $response = "END Invalid Request";
+	} else { 
+
+	$response = "END Invalid Request";
 }
 
 echo $response;

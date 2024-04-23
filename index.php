@@ -48,9 +48,9 @@ if ($text == "") {
 	$maxsql = "SELECT id AS maxid FROM verses WHERE topic = '$stext' ORDER BY id DESC";
 	$maxsql = mysqli_query($con,$maxsql);
 
-	if (mysqli_num_rows($maxsql)>0) {
+	if (mysqli_num_rows($maxsql)<1) {
 		// code...
-		$response = "END Verses will be available soon";
+		$response = "END Verses on option $stext will be available soon";
 		
 	} else {
 
@@ -88,7 +88,7 @@ if ($text == "") {
         CURLOPT_HTTPHEADER => array(
             'Content-Type: application/json',
             'Accept: application/json',
-            'Authorization: Bearer 5qNuXQ0HfU8N9fBfvApLqoWBEOQ3pdkLZEhtPLvSa9D4GYyQfuWf5BQv4a9e'
+            'Authorization: Bearer '
           ),
         ));
 

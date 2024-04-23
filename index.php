@@ -48,6 +48,12 @@ if ($text == "") {
 	$maxsql = "SELECT id AS maxid FROM verses WHERE topic = '$stext' ORDER BY id DESC";
 	$maxsql = mysqli_query($con,$maxsql);
 
+	if (mysqli_num_rows($maxsql)>0) {
+		// code...
+		$response = "END Verses will be available soon";
+		
+	} else {
+
 	//Randomise verse
 	$max = mysqli_fetch_array($maxsql);
 	$max = $max['maxid'];
@@ -82,7 +88,7 @@ if ($text == "") {
         CURLOPT_HTTPHEADER => array(
             'Content-Type: application/json',
             'Accept: application/json',
-            'Authorization: Bearer '
+            'Authorization: Bearer 5qNuXQ0HfU8N9fBfvApLqoWBEOQ3pdkLZEhtPLvSa9D4GYyQfuWf5BQv4a9e'
           ),
         ));
 
@@ -91,9 +97,10 @@ if ($text == "") {
         // echo $response;   
 
         //User display
-		$response = "END Verse: $verse\n$verse_text\n$verse_id\n";
+		$response = "END Verse: $verse\n$verse_text\n$stext\n";
   
 	}
+}
 
 		//Log results
 		$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId','$text','$verse_id','$idate')";

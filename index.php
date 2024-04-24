@@ -24,7 +24,7 @@ if ($text!=="") {
 
 if ($text == "") {
 	# Business logic for response level 1...
-	$sql = "SELECT id,topic FROM topics ORDER BY topic ASC";
+	$sql = "SELECT id,topic FROM topics ORDER BY id ASC";
 	$sql = mysqli_query($con,$sql);
 
 	//Start screen
@@ -88,7 +88,7 @@ if ($text == "") {
         CURLOPT_HTTPHEADER => array(
             'Content-Type: application/json',
             'Accept: application/json',
-            'Authorization: Bearer '
+            'Authorization: Bearer 5qNuXQ0HfU8N9fBfvApLqoWBEOQ3pdkLZEhtPLvSa9D4GYyQfuWf5BQv4a9e'
           ),
         ));
 

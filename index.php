@@ -111,6 +111,8 @@ if ($text == "") {
 	$response = "END Invalid Request";
 }
 
+session_destroy();
+
 echo $response;
 
 ; ?>

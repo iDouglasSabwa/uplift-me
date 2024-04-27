@@ -15,15 +15,12 @@ $idate =  date('Y-m-d H:i:s');
 //Database connection file
 include 'connect.php';
 
-// if ($text!=="") {
-// 	// code...
-// 	session_start();
-// 	$_SESSION['stext'] = $text;
-// 	$stext = $_SESSION['stext']; 
 
-// }
+//Log results
+	$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId',NULL,NULL,'$idate')";
+	$inslog = mysqli_query($con,$inslog);
 
-if ($text == "") {
+if ($text == "1") {
 	# Business logic for response level 1...
 	$sql = "SELECT id,topic FROM topics ORDER BY id ASC";
 	$sql = mysqli_query($con,$sql);
@@ -43,18 +40,14 @@ if ($text == "") {
 	}
 
 
-	//Log results
-		$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId','$topic_id','','$idate')";
-		$inslog = mysqli_query($con,$inslog);
 
-
-} elseif($text !=="") {
+} elseif($text =="") {
 	# Business logic for response level 1...
 	session_start();
 	$_SESSION['stext'] = $text;
 	$stext = $_SESSION['stext'];
 
-	$maxsql = "SELECT id AS maxid FROM verses WHERE topic = '$stext' ORDER BY id DESC";
+	$maxsql = "SELECT id AS maxid FROM verses WHERE topic = 3 ORDER BY id DESC";
 	$maxsql = mysqli_query($con,$maxsql);
 
 	if (mysqli_num_rows($maxsql)<1) {
@@ -64,9 +57,28 @@ if ($text == "") {
 	} else {
 
 	//Randomise verse
-	$max = mysqli_fetch_array($maxsql);
-	$max = $max['maxid'];
-	$verse_id = mt_rand(1,$max);
+
+		foreach ($maxsql as $key => $random) {
+			// code...
+			$maxid = $random['maxid'];
+			$randomNumbers = array();
+			$randomNumbers[] = $maxid;
+			$randomIndex = array_rand($randomNumbers);
+			// $randomNumber = $maxsql[$randomIndex];
+
+			// var_dump($randomIndex);
+			print_r($randomNumbers);
+			// $randomIndex = array_rand($random);
+			// $randomNumber = $maxsql[$randomIndex];
+			// var_dump($randomIndex);
+		}
+
+	// $max = mysqli_fetch_array($maxsql, MYSQLI_NUM);
+	// printf ("%s\n", $max[1]);
+	// var_dump($max);
+	// $verse_id = $max[array_rand($max)];
+	// $max = $max['maxid'];
+	// $verse_id = mt_rand(1,$max);
 
 	$sql = "SELECT verses.id,verse,verse_text,topics.topic AS topic FROM verses INNER JOIN topics ON topics.id = verses.topic WHERE verses.id = '$verse_id';";
 	$sql = mysqli_query($con,$sql);
@@ -106,7 +118,7 @@ if ($text == "") {
         // echo $response;   
 
         //User display
-		$response = "END Verse: $verse\n$verse_text\n$stext\n";
+		$response = "END Verse: $verse\n$verse_text\n$verse_id\n$topic";
   
 	}
 }

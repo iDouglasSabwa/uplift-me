@@ -15,12 +15,13 @@ $idate =  date('Y-m-d H:i:s');
 //Database connection file
 include 'connect.php';
 
-if ($text!=="") {
-	// code...
-	session_start();
-	$_SESSION['stext'] = $text;
-	$stext = $_SESSION['stext']; 
-}
+// if ($text!=="") {
+// 	// code...
+// 	session_start();
+// 	$_SESSION['stext'] = $text;
+// 	$stext = $_SESSION['stext']; 
+
+// }
 
 if ($text == "") {
 	# Business logic for response level 1...
@@ -33,18 +34,26 @@ if ($text == "") {
 
 	foreach ($sql as $key => $value) {
 		# code...
-		$id = $value['id'];
+		$topic_id = $value['id'];
 		$topic = $value['topic'];
 
 		//Screen options
-		$response .= $number++ . ". $topic\n";	}
+		$response .= $number++ . ". $topic\n";
+
+	}
+
 
 	//Log results
-		$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId','$id','','$idate')";
+		$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId','$topic_id','','$idate')";
 		$inslog = mysqli_query($con,$inslog);
 
-} elseif($text == $stext) {
+
+} elseif($text !=="") {
 	# Business logic for response level 1...
+	session_start();
+	$_SESSION['stext'] = $text;
+	$stext = $_SESSION['stext'];
+
 	$maxsql = "SELECT id AS maxid FROM verses WHERE topic = '$stext' ORDER BY id DESC";
 	$maxsql = mysqli_query($con,$maxsql);
 
@@ -106,12 +115,12 @@ if ($text == "") {
 		$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId','$text','$verse_id','$idate')";
 		$inslog = mysqli_query($con,$inslog);
 
+		session_destroy();
+
 	} else { 
 
 	$response = "END Invalid Request";
 }
-
-session_destroy();
 
 echo $response;
 

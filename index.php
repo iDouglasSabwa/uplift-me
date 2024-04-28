@@ -15,14 +15,6 @@ $idate =  date('Y-m-d H:i:s');
 //Database connection file
 include 'connect.php';
 
-function getRandomArrayElement($array)
-{
-    $randomIndex = array_rand($array);
-    $randomElement = $array[$randomIndex];
-    return $randomElement;
-}
-
-
 //Log results
 	$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId',NULL,NULL,'$idate')";
 	$inslog = mysqli_query($con,$inslog);

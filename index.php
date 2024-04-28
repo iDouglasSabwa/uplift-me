@@ -15,6 +15,13 @@ $idate =  date('Y-m-d H:i:s');
 //Database connection file
 include 'connect.php';
 
+function getRandomArrayElement($array)
+{
+    $randomIndex = array_rand($array);
+    $randomElement = $array[$randomIndex];
+    return $randomElement;
+}
+
 
 //Log results
 	$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId',NULL,NULL,'$idate')";
@@ -36,49 +43,28 @@ if ($text == "1") {
 
 		//Screen options
 		$response .= $number++ . ". $topic\n";
-
 	}
 
-
-
 } elseif($text =="") {
-	# Business logic for response level 1...
+	# Business logic for responses based on text value...
 	session_start();
 	$_SESSION['stext'] = $text;
 	$stext = $_SESSION['stext'];
 
-	$maxsql = "SELECT id AS maxid FROM verses WHERE topic = 3 ORDER BY id DESC";
+	//Randomise query result
+	$maxsql = "SELECT id AS maxid FROM verses WHERE topic = 3 ORDER BY RAND() LIMIT 1";
 	$maxsql = mysqli_query($con,$maxsql);
 
 	if (mysqli_num_rows($maxsql)<1) {
-		// code...
+		// If no verses available for that option...
 		$response = "END Verses on option $stext will be available soon";
 		
 	} else {
-
-	//Randomise verse
-
-		foreach ($maxsql as $key => $random) {
-			// code...
-			$maxid = $random['maxid'];
-			$randomNumbers = array();
-			$randomNumbers[] = $maxid;
-			$randomIndex = array_rand($randomNumbers);
-			// $randomNumber = $maxsql[$randomIndex];
-
-			// var_dump($randomIndex);
-			print_r($randomNumbers);
-			// $randomIndex = array_rand($random);
-			// $randomNumber = $maxsql[$randomIndex];
-			// var_dump($randomIndex);
+		//Get value of verse id from randomised query
+		foreach ($maxsql as $key => $value) {
+			$verse_id = $value['maxid'];	
 		}
 
-	// $max = mysqli_fetch_array($maxsql, MYSQLI_NUM);
-	// printf ("%s\n", $max[1]);
-	// var_dump($max);
-	// $verse_id = $max[array_rand($max)];
-	// $max = $max['maxid'];
-	// $verse_id = mt_rand(1,$max);
 
 	$sql = "SELECT verses.id,verse,verse_text,topics.topic AS topic FROM verses INNER JOIN topics ON topics.id = verses.topic WHERE verses.id = '$verse_id';";
 	$sql = mysqli_query($con,$sql);

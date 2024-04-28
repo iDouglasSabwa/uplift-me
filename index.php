@@ -47,11 +47,11 @@ if ($text == "") {
 	}
 
 } elseif($text == $stext) {
-	# Business logic for responses based on text value...
-	
+	# Business logic for responses based on text value...	
 
+	$maxsql = "SELECT id AS maxid FROM verses WHERE topic = '$stext' ORDER BY RAND() LIMIT 1";
+	
 	//Randomise query result
-	$maxsql = "SELECT id AS maxid FROM verses WHERE topic = 3 ORDER BY RAND() LIMIT 1";
 	$maxsql = mysqli_query($con,$maxsql);
 
 	if (mysqli_num_rows($maxsql)<1) {

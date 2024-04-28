@@ -19,7 +19,16 @@ include 'connect.php';
 	$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId',NULL,NULL,'$idate')";
 	$inslog = mysqli_query($con,$inslog);
 
-if ($text == "1") {
+
+//Assign session variable if text is not blank
+if ($text !== "") {
+		// code...
+		session_start();
+		$_SESSION['stext'] = $text;
+		$stext = $_SESSION['stext'];
+	}	
+
+if ($text == "") {
 	# Business logic for response level 1...
 	$sql = "SELECT id,topic FROM topics ORDER BY id ASC";
 	$sql = mysqli_query($con,$sql);
@@ -37,11 +46,9 @@ if ($text == "1") {
 		$response .= $number++ . ". $topic\n";
 	}
 
-} elseif($text =="") {
+} elseif($text == $stext) {
 	# Business logic for responses based on text value...
-	session_start();
-	$_SESSION['stext'] = $text;
-	$stext = $_SESSION['stext'];
+	
 
 	//Randomise query result
 	$maxsql = "SELECT id AS maxid FROM verses WHERE topic = 3 ORDER BY RAND() LIMIT 1";

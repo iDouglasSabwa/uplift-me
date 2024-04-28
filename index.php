@@ -48,9 +48,10 @@ if ($text == "") {
 
 } elseif($text == $stext) {
 	# Business logic for responses based on text value...	
+	$stext = str_replace("98*","",$stext);
 
 	$maxsql = "SELECT id AS maxid FROM verses WHERE topic = '$stext' ORDER BY RAND() LIMIT 1";
-	
+
 	//Randomise query result
 	$maxsql = mysqli_query($con,$maxsql);
 

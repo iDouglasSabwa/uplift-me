@@ -110,7 +110,7 @@ if ($text == "") {
 }
 
 		//Log results
-		$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId','$text','$verse_id','$idate')";
+		$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId','$stext','$verse_id','$idate')";
 		$inslog = mysqli_query($con,$inslog);
 
 		session_destroy();

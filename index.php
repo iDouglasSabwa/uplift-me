@@ -75,7 +75,7 @@ if ($text == "") {
 		$verse = $value['verse'];
 		$verse_text = $value['verse_text'];
 		//Truncated verse for screen display
-		$trunc_verse = substr($verse_text,0,100).'...'
+		$trunc_verse = substr($verse_text,0,100).'...';
 		$topic = $value['topic'];
 
 		//Send text to the user

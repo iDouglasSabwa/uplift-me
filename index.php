@@ -74,6 +74,8 @@ if ($text == "") {
 		$id = $value['id'];
 		$verse = $value['verse'];
 		$verse_text = $value['verse_text'];
+		//Truncated verse for screen display
+		$trunc_verse = 
 		$topic = $value['topic'];
 
 		//Send text to the user
@@ -104,7 +106,7 @@ if ($text == "") {
         // echo $response;   
 
         //User display
-		$response = "END Verse: $verse\n$verse_text\n$verse_id\n$topic";
+		$response = "END Verse: $verse\n$verse_text\n";
   
 	}
 }

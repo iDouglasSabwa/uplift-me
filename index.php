@@ -103,7 +103,7 @@ if ($text == "") {
         CURLOPT_HTTPHEADER => array(
             'Content-Type: application/json',
             'Accept: application/json',
-            'Authorization: Bearer 5qNuXQ0HfU8N9fBfvApLqoWBEOQ3pdkLZEhtPLvSa9D4GYyQfuWf5BQv4a9e'
+            'Authorization: Bearer '
           ),
         ));
 

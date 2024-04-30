@@ -14,6 +14,7 @@ $idate =  date('Y-m-d H:i:s');
 
 //Database connection file
 include 'connect.php';
+include 'keys.php';
 
 //Log results
 	// $inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId',NULL,NULL,'$idate')";
@@ -103,7 +104,7 @@ if ($text == "") {
         CURLOPT_HTTPHEADER => array(
             'Content-Type: application/json',
             'Accept: application/json',
-            'Authorization: Bearer '
+            'Authorization: Bearer '.$token.''
           ),
         ));
 

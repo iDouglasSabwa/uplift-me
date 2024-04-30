@@ -16,8 +16,8 @@ $idate =  date('Y-m-d H:i:s');
 include 'connect.php';
 
 //Log results
-	$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId',NULL,NULL,'$idate')";
-	$inslog = mysqli_query($con,$inslog);
+	// $inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId',NULL,NULL,'$idate')";
+	// $inslog = mysqli_query($con,$inslog);
 
 
 //Assign session variable if text is not blank
@@ -33,6 +33,12 @@ if ($text == "") {
 	$sql = "SELECT id,topic FROM topics ORDER BY id ASC";
 	$sql = mysqli_query($con,$sql);
 
+	if (mysqli_num_rows($sql)>1) {
+		// code...
+		$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId',NULL,NULL,'$idate')";
+		$inslog = mysqli_query($con,$inslog);
+	}
+
 	//Start screen
 	$response = "CON Choose a topic\n";
 	$number = 1;
@@ -44,12 +50,12 @@ if ($text == "") {
 
 		//Screen options
 		$response .= $number++ . ". $topic\n";
+		
 	}
 
 } elseif($text == $stext) {
 	# Business logic for responses based on text value...	
 	$stext = str_replace("98*","",$stext);
-
 	$maxsql = "SELECT id AS maxid FROM verses WHERE topic = '$stext' ORDER BY RAND() LIMIT 1";
 
 	//Randomise query result
@@ -75,7 +81,7 @@ if ($text == "") {
 		$verse = $value['verse'];
 		$verse_text = $value['verse_text'];
 		//Truncated verse for screen display
-		$trunc_verse = substr($verse_text,0,150).'...';
+		$trunc_verse = substr($verse_text,0,100).'...';
 		$topic = $value['topic'];
 
 		//Send text to the user
@@ -97,7 +103,7 @@ if ($text == "") {
         CURLOPT_HTTPHEADER => array(
             'Content-Type: application/json',
             'Accept: application/json',
-            'Authorization: Bearer '
+            'Authorization: Bearer 5qNuXQ0HfU8N9fBfvApLqoWBEOQ3pdkLZEhtPLvSa9D4GYyQfuWf5BQv4a9e'
           ),
         ));
 

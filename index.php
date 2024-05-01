@@ -50,12 +50,11 @@ if ($text == "") {
 	}
 
 } elseif($text == $stext) {
-	# Business logic for responses based on text value...	
-	$stext = str_replace("98*","",$stext);
-	$stext = str_replace("0*","",$stext);
-	$maxsql = "SELECT id AS maxid FROM verses WHERE topic = '$stext' ORDER BY RAND() LIMIT 1";
+	$stext = str_replace("98*","",$stext);//Remove extra characters if more is selected
+	$stext = str_replace("0*","",$stext);//Remove extra characters if back is selected
 
-	//Randomise query result
+	//Get a random verse id based on user input
+	$maxsql = "SELECT id AS maxid FROM verses WHERE topic = '$stext' ORDER BY RAND() LIMIT 1";
 	$maxsql = mysqli_query($con,$maxsql);
 
 	if (mysqli_num_rows($maxsql)<1) {
@@ -63,55 +62,55 @@ if ($text == "") {
 		$response = "END Verses on option $stext will be available soon";
 		
 	} else {
-		//Get value of verse id from randomised query
+		//If verse are available
 		foreach ($maxsql as $key => $value) {
-			$verse_id = $value['maxid'];	
+			$verse_id = $value['maxid'];
+
+			//Get value of verse using the verse id
+			$sql = "SELECT verses.id,verse,verse_text,topics.topic AS topic FROM verses INNER JOIN topics ON topics.id = verses.topic WHERE verses.id = '$verse_id';";
+			$sql = mysqli_query($con,$sql);
+
+			foreach ($sql as $key => $value) {
+				# code...
+				$id = $value['id'];
+				$verse = $value['verse'];
+				$verse_text = $value['verse_text'];
+				//Truncated verse for screen display
+				$trunc_verse = substr($verse_text,0,100).'...';
+				$topic = $value['topic'];
+
+				//Send text to the user
+				$curl = curl_init();
+		        curl_setopt_array($curl, array(
+		        CURLOPT_URL => 'https://api.mobilesasa.com/v1/send/message',
+		        CURLOPT_RETURNTRANSFER => true,
+		        CURLOPT_ENCODING => '',
+		        CURLOPT_MAXREDIRS => 10,
+		        CURLOPT_TIMEOUT => 0,
+		        CURLOPT_FOLLOWLOCATION => true,
+		        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		        CURLOPT_CUSTOMREQUEST => 'POST',
+		        CURLOPT_POSTFIELDS =>'{
+		            "senderID": "MOBILESASA",
+		            "message": "Context: '.$topic.'\n\n'.$verse.'\n'.$verse_text.'\n",
+		            "phone": "'.$phoneNumber.'"
+		        }',
+		        CURLOPT_HTTPHEADER => array(
+		            'Content-Type: application/json',
+		            'Accept: application/json',
+		            'Authorization: Bearer '.$token.''
+		          ),
+		        ));
+
+		        $smsresponse = curl_exec($curl);
+		        curl_close($curl);
+		        // echo $response;   
+
+		        //User display
+				$response = "END Verse: $verse\n$trunc_verse\n";
+		  
+				}	
 		}
-
-
-	$sql = "SELECT verses.id,verse,verse_text,topics.topic AS topic FROM verses INNER JOIN topics ON topics.id = verses.topic WHERE verses.id = '$verse_id';";
-	$sql = mysqli_query($con,$sql);
-
-	foreach ($sql as $key => $value) {
-		# code...
-		$id = $value['id'];
-		$verse = $value['verse'];
-		$verse_text = $value['verse_text'];
-		//Truncated verse for screen display
-		$trunc_verse = substr($verse_text,0,100).'...';
-		$topic = $value['topic'];
-
-		//Send text to the user
-		$curl = curl_init();
-        curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://api.mobilesasa.com/v1/send/message',
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS =>'{
-            "senderID": "MOBILESASA",
-            "message": "Context: '.$topic.'\n\n'.$verse.'\n'.$verse_text.'\n",
-            "phone": "'.$phoneNumber.'"
-        }',
-        CURLOPT_HTTPHEADER => array(
-            'Content-Type: application/json',
-            'Accept: application/json',
-            'Authorization: Bearer '.$token.''
-          ),
-        ));
-
-        $smsresponse = curl_exec($curl);
-        curl_close($curl);
-        // echo $response;   
-
-        //User display
-		$response = "END Verse: $verse\n$trunc_verse\n";
-  
-	}
 }
 
 		//Log results

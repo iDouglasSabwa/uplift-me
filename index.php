@@ -16,11 +16,6 @@ $idate =  date('Y-m-d H:i:s');
 include 'connect.php';
 include 'keys.php';
 
-//Log results
-	// $inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId',NULL,NULL,'$idate')";
-	// $inslog = mysqli_query($con,$inslog);
-
-
 //Assign session variable if text is not blank
 if ($text !== "") {
 		// code...

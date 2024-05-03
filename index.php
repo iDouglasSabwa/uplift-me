@@ -79,7 +79,18 @@ if ($text == "") {
 				$trunc_verse = substr($verse_text,0,100).'...';
 				$topic = $value['topic'];
 
-				//Send text to the user
+		        //User display
+				$response = "END Verse: $verse\n$trunc_verse\n";
+		  
+				}	
+		}
+}
+
+				//Log results
+				$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId','$stext','$verse_id','$idate')";
+				$inslog = mysqli_query($con,$inslog);
+
+						//Send text to the user
 				$curl = curl_init();
 		        curl_setopt_array($curl, array(
 		        CURLOPT_URL => 'https://api.mobilesasa.com/v1/send/message',
@@ -106,16 +117,6 @@ if ($text == "") {
 		        curl_close($curl);
 		        // echo $response;   
 
-		        //User display
-				$response = "END Verse: $verse\n$trunc_verse\n";
-		  
-				}	
-		}
-}
-
-		//Log results
-		$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId','$stext','$verse_id','$idate')";
-		$inslog = mysqli_query($con,$inslog);
 
 		session_destroy();
 

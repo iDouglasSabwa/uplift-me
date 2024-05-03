@@ -84,13 +84,12 @@ if ($text == "") {
 		  
 				}	
 		}
-}
 
 				//Log results
 				$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId','$stext','$verse_id','$idate')";
 				$inslog = mysqli_query($con,$inslog);
 
-						//Send text to the user
+				//Send text to the user
 				$curl = curl_init();
 		        curl_setopt_array($curl, array(
 		        CURLOPT_URL => 'https://api.mobilesasa.com/v1/send/message',
@@ -119,6 +118,9 @@ if ($text == "") {
 
 
 		session_destroy();
+}
+
+
 
 	} else { 
 

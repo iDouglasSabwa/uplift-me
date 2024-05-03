@@ -83,7 +83,6 @@ if ($text == "") {
 				$response = "END Verse: $verse\n$trunc_verse\n";
 		  
 				}	
-		}
 
 				//Log results
 				$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId','$stext','$verse_id','$idate')";
@@ -114,12 +113,11 @@ if ($text == "") {
 
 		        $smsresponse = curl_exec($curl);
 		        curl_close($curl);
-		        // echo $response;   
+		        // echo $response; 
 
-
-		session_destroy();
+			session_destroy();	
+		}				
 }
-
 
 
 	} else { 

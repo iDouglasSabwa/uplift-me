@@ -118,7 +118,7 @@ if ($text == "") {
 			session_destroy();	
 		}				
 }
-
+	return mysqli_close();
 
 	} else { 
 

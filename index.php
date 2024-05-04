@@ -81,12 +81,12 @@ if ($text == "") {
 
 		        //User display
 				$response = "END Verse: $verse\n$trunc_verse\n";
-		  
-				}	
 
-				//Log results
+					//Log results
 				$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId','$stext','$verse_id','$idate')";
 				$inslog = mysqli_query($con,$inslog);
+		  
+				}				
 
 				//Send text to the user
 				$curl = curl_init();
@@ -116,9 +116,11 @@ if ($text == "") {
 		        // echo $response; 
 
 			session_destroy();	
-		}				
+		}	
+
+
 }
-	return mysqli_close($con);
+	
 
 	} else { 
 
@@ -126,5 +128,7 @@ if ($text == "") {
 }
 
 echo $response;
+
+return mysqli_close($con);	
 
 ; ?>

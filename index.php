@@ -117,8 +117,6 @@ if ($text == "") {
 
 			session_destroy();	
 		}	
-
-
 }
 	
 

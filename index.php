@@ -31,7 +31,7 @@ if ($text == "") {
 
 	if (mysqli_num_rows($sql)>1) {
 		// code...
-		$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId',NULL,NULL,'$idate')";
+		$inslog = "INSERT INTO applogs(phone,session,topic,verse,referrer,ip_address,date_created) VALUES ('$phoneNumber','$sessionId',NULL,NULL,'$referrer','$ip','$idate')";
 		$inslog = mysqli_query($con,$inslog);
 	}
 
@@ -83,7 +83,7 @@ if ($text == "") {
 				$response = "END Verse: $verse\n$trunc_verse\n";
 
 					//Log results
-				$inslog = "INSERT INTO applogs(phone,session,topic,verse,date_created) VALUES ('$phoneNumber','$sessionId','$stext','$verse_id','$idate')";
+				$inslog = "INSERT INTO applogs(phone,session,topic,verse,referrer,ip_address,date_created) VALUES ('$phoneNumber','$sessionId','$stext','$verse_id','$referrer','$ip','$idate')";
 				$inslog = mysqli_query($con,$inslog);
 		  
 				}				

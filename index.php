@@ -12,9 +12,9 @@ $text = $_POST['text'];
 date_default_timezone_set("Africa/Nairobi");    
 $idate =  date('Y-m-d H:i:s');
 
-//Database connection file
-include 'connect.php';
-include 'keys.php';
+include 'connect.php';//Database connection file
+include 'keys.php';//SMS API token key
+include 'ip.php';//IP configuration file
 
 //Assign session variable if text is not blank
 if ($text !== "") {
